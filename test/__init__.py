@@ -1,16 +1,10 @@
-import pytest
-# declaring flask app
-from flask import Flask
-
-app = Flask(__name__)
+import subprocess
 
 
-@pytest.fixture
-def client():
-    app.config['TESTING'] = True
-    with app.test_client() as client:
-        with app.app_context():
-            db.create_all()
-        yield client
-        with app.app_context():
-            db.drop_all()
+def initialize_test_database():
+    """Initialize and populate the test database."""
+    subprocess.run(['flask', 'db', 'init', '--database', 'test'])  # Initialize test database
+    subprocess.run(['flask', 'db', 'migrate', '-m', 'initialize', '--database', 'test'])  # Migrate test database
+    subprocess.run(['flask', 'db', 'upgrade', '--database', 'test'])  # Upgrade test database
+    subprocess.run(['python3', 'src/scripts/import_data.py', 'src/scripts/test_data.tsv', '--database', 'test'])  # Import test data
+

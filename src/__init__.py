@@ -9,25 +9,33 @@ from dotenv import load_dotenv
 # loading environment variables
 load_dotenv()
 
-# declaring flask app
-app = Flask(__name__)
 
+def create_app():
+    # declaring flask app
+    this_app = Flask(__name__)
+
+    # path for local db
+    this_app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
+    this_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
+    return this_app
+
+
+app = create_app()
 # initialize with dev configuration
 config = Config().dev
 app.env = config.ENV
-
-# path for local db
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('SQLALCHEMY_DATABASE_URI')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = os.getenv('SQLALCHEMY_TRACK_MODIFICATIONS')
-
 db = SQLAlchemy(app)
 
 # Flask Migrate instance to handle database migrations
 migrate = Migrate(app, db)
+from src.models.geoname_model import Geoname
 
-from .models.geoname_model import Geoname
+# import routes
+from src.routes import suggestions
+app.register_blueprint(suggestions)
 
 
 @app.route("/")
 def index():
     return "<h1>Hello, World!</h1>"
+

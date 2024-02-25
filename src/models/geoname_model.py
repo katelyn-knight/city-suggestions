@@ -1,3 +1,5 @@
+from sqlalchemy_serializer import SerializerMixin
+from collections import OrderedDict
 
 from .. import db
 
@@ -28,8 +30,10 @@ modification date : date of last modification in yyyy-MM-dd format
 """
 
 
-class Geoname(db.Model):
+class Geoname(db.Model, SerializerMixin):
     __tablename__ = "geoname"
+
+    serialize_only = ('id', 'name', 'country', 'admin1', 'latitude', 'longitude', 'population', 'tz')
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(255))
@@ -50,6 +54,9 @@ class Geoname(db.Model):
     dem = db.Column(db.Integer)
     tz = db.Column(db.String(50))
     modified_at = db.Column(db.DateTime)
+
+    def to_dict(self):
+        return OrderedDict((key, getattr(self, key)) for key in self.serialize_only)
 
     def __repr__(self):
         return f"<City {self.name}>"

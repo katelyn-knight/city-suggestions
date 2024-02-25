@@ -1,4 +1,5 @@
 import sys
+import hashlib
 sys.path.append('..')
 
 from src import db
@@ -10,12 +11,25 @@ from datetime import datetime
 app.app_context().push()
 
 
+def get_row_hash(row):
+    """Generate a hash for a given row, excluding the 'id' field"""
+    fields_to_hash = {k: v for k, v in row.items() if k != 'id'}
+    return hashlib.md5(str(fields_to_hash).encode()).hexdigest()
+
+
 def import_data_from_tsv(filename):
     csv.field_size_limit(sys.maxsize)
+    processed_rows = set()  # To store hashes of processed rows
 
     with open(filename, 'r', encoding='utf-8') as tsvfile:
         reader = csv.DictReader(tsvfile, delimiter='\t')
         for row in reader:
+            row_hash = get_row_hash(row)
+            if row_hash in processed_rows:
+                continue  # Skip if the row is a duplicate
+            else:
+                processed_rows.add(row_hash)
+
             if not row['modified_at']:
                 break
             # Convert modified_at to a datetime object
@@ -47,7 +61,6 @@ def import_data_from_tsv(filename):
             )
             db.session.add(geoname)
         db.session.commit()
-
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
