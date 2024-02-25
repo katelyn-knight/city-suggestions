@@ -32,12 +32,14 @@ The API provides a single endpoint for retrieving autocomplete suggestions:
 ### Endpoint
 
 ```
-GET /suggestions?q={user_input}
+GET /suggestions?q={user_input}&latitude={latitude}&longitude={longitude}
 ```
 
 ### Parameters
 
 - `q` (required): User input for which autocomplete suggestions are requested.
+- `latitude` (optional): Latitude of the desired location.
+- `longitude` (optional): Longitude of the desired location.
 
 ### Response
 
@@ -47,18 +49,18 @@ Example response:
 ```json
 {
     "suggestions": [
-        {
-            "name": "New York, NY, USA",
-            "latitude": 40.7128,
-            "longitude": -74.006,
-            "score": 0.9
-        },
-        {
-            "name": "Los Angeles, CA, USA",
-            "latitude": 34.0522,
-            "longitude": -118.2437,
-            "score": 0.85
-        },
+       {
+          "latitude": 42.98339, 
+          "longitude": -81.23304, 
+          "name": "London, 08, CA", 
+          "score": 1.0
+       },
+       {
+          "latitude": 42.46676, 
+          "longitude": -70.94949, 
+          "name": "Lynn, MA, US",
+          "score": 0.9736842105263158
+       },
         ...
     ]
 }
