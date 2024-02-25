@@ -31,8 +31,8 @@ migrate = Migrate(app, db)
 from src.models.geoname_model import Geoname
 
 # import routes
-from src.routes import suggestions
-app.register_blueprint(suggestions)
+from src.routes import suggestions_api
+app.register_blueprint(suggestions_api)
 
 
 @app.route("/")

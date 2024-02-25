@@ -1,11 +1,11 @@
 from flask import request, Response, json, Blueprint
 from src.services.suggest_service import SuggestionsService
 
-suggestions = Blueprint('suggestions', __name__)
+suggestions_api = Blueprint('suggestions', __name__)
 
 
 # GET /suggestions
-@suggestions.route('/suggestions', methods=['GET'])
+@suggestions_api.route('/suggestions', methods=['GET'])
 def get_suggestions():
     # Get the query parameter
     q = request.args.get('q')
