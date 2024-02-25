@@ -1,7 +1,12 @@
-flask
+flask~=3.0.2
 pathlib
-python-dotenv
+python-dotenv~=1.0.1
 PyJWT
 Flask-SQLAlchemy
 Flask-Migrate
 flask-bcrypt
+SQLAlchemy-serializer
+Flask-Testing
+SQLAlchemy~=2.0.27
+alembic~=1.13.1
+Levenshtein~=0.25.0
