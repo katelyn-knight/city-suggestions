@@ -1,0 +1,8 @@
+/.idea
+/.idea/*
+/instance/
+/instance/*
+/scripts/*.tsv
+/scripts/*.json
+/scripts/*.csv
+city-suggestions.iml
