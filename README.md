@@ -1,7 +1,3 @@
-Sure, here's a sample README.md file for your project:
-
----
-
 # City Autocomplete API
 
 This project provides an API endpoint for autocomplete suggestions of large cities based on user input. It leverages a database of cities to quickly provide suggestions as the user types.
